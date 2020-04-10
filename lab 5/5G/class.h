@@ -80,4 +80,19 @@ public:
 		}
 		return D;
 	}
+
+	void show()
+	{
+		if (first == NULL)
+		{
+			throw qException("Queue is empty");
+		}
+		list* count = first;
+		while (count != last)
+		{
+			cout << count->data << ' ';
+			count = count->next;
+		}
+		cout << count->data << endl;
+	}
 };
