@@ -34,6 +34,17 @@ int main()
 				cout << ex.getError() << endl;
 			}
 		}
+		else if (kom == "show")
+		{
+			try
+			{
+				New.show();
+			}
+			catch (qException& ex)
+			{
+				cout << ex.getError() << endl;
+			}
+		}
 		else if (kom == "exit")
 		{
 			return 0;
