@@ -4,11 +4,11 @@
 
 using namespace std;
 
-Complex::Complex()
-{
-	real = 1;
-	imaj = 1;
-};
+Complex::Complex(double re = 1, double im = 1) :
+	real(re), imaj(im) {}
+Complex::Complex(Complex& com) :
+	real(com.real), imaj(com.imaj) {}
+
 void Complex::create(double re, double im)
 {
 	real = re;
@@ -28,11 +28,11 @@ void Complex::add_complex(double re, double im)
 	cout << "Answer: ";
 	print();
 }
-void Complex::mult_complex(double re, double im)
+void Complex::mult_complex(Complex B)
 {
 	double countReal = real;
-	real = real * re - imaj * im;
-	imaj = countReal * im + imaj * re;
+	real = real * B.real - imaj * B.imaj;
+	imaj = countReal * B.imaj + imaj * B.real;
 	cout << "Answer: ";
 	print();
 }
@@ -61,8 +61,15 @@ void Complex::print()
 	}
 }
 
+Menu::Menu() 
+{
+
+};
+
 void Menu::command_Menu()
 {
+	Complex A(1, 1);
+	Complex B(A);
 	cout << "List of commands:" << endl;
 	cout << "1. Create a new complex number;" << endl;
 	cout << "2. Multiplication by real number;" << endl;
@@ -115,7 +122,8 @@ void Menu::command_Execution()
 			cin >> re;
 			cout << "Enter the imaj part of second number: ";
 			cin >> im;
-			A.mult_complex(re, im);
+			B.create(re, im);
+			A.mult_complex(B);
 			break;
 		}
 		case 5:
