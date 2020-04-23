@@ -21,10 +21,10 @@ void Complex::mult_real(double re)
 	cout << "Answer: ";
 	print();
 }
-void Complex::add_complex(double re, double im)
+void Complex::add_complex(Complex B)
 {
-	real += re;
-	imaj += im;
+	real += B.real;
+	imaj += B.imaj;
 	cout << "Answer: ";
 	print();
 }
@@ -112,7 +112,8 @@ void Menu::command_Execution()
 			cin >> re;
 			cout << "Enter the imaj part of second number: ";
 			cin >> im;
-			A.add_complex(re, im);
+			B.create(re, im);
+			A.add_complex(B);
 			break;
 		}
 		case 4:
