@@ -35,6 +35,8 @@ T find_backward(T start, T end, TV des_value, F fun)
 		if (fun(*count, des_value))
 			return count;
 		count--;
+		if (count == start)
+			break;
 	}
 	return end;
 }
