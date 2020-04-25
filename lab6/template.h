@@ -30,7 +30,7 @@ T find_backward(T start, T end, TV des_value, F fun)
 {
 	T count = end;
 	count--;
-	while (count + 1 != start)
+	while (count != start)
 	{
 		if (fun(*count, des_value))
 			return count;
