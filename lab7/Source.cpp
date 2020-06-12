@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include "CircBuffer.h"
 
 using namespace std;
@@ -11,6 +12,10 @@ int main()
 	myCirc.push_back(3);
 	myCirc.push_back(4);
 	myCirc.push_back(5);
+	for (size_t i = 0; i < myCirc.size(); i++)
+	{
+		cout << myCirc[i] << ' ';
+	}
 	myCirc.push_back(6);
 	myCirc.pop_back();
 	for (size_t i = 0; i < myCirc.size(); i++)
@@ -50,16 +55,22 @@ int main()
 	}
 	cout << endl;
 
-	myCirc.erase(8);
-	myCirc.erase(9);
 	for (size_t i = 0; i < myCirc.size(); i++)
 	{
 		cout << myCirc[i] << ' ';
 	}
 	cout << endl;
 
-	myCirc.insert(0, 99);
-	myCirc.insert(1, 100);
+	myCirc.insert(myCirc.begin() + 1, 33);
+	myCirc.insert(myCirc.end() - 3, 22);
+	for (size_t i = 0; i < myCirc.size(); i++)
+	{
+		cout << myCirc[i] << ' ';
+	}
+	cout << endl;
+
+	myCirc.erase(myCirc.begin());
+	myCirc.erase(myCirc.begin() + 3);
 	for (size_t i = 0; i < myCirc.size(); i++)
 	{
 		cout << myCirc[i] << ' ';
