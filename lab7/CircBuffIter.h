@@ -1,20 +1,20 @@
 #pragma once
 #include<iterator>
 
-
 template <typename T>
 class CircIter :public std::iterator<std::random_access_iterator_tag, T>
 {
 public:
-	CircIter() : _data(nullptr), _pos(nullptr), _start(nullptr), _end(nullptr), _cap(0) {};
-	CircIter(T* data, T* pos, T* start, T* end, size_t cap) : _data(data), _pos(pos), _start(start), _end(end), _cap(cap) {};
+	CircIter() : _data(nullptr), _cap(0), _start(0), _end(0), _pos(0) {};
+	CircIter(T* data, size_t cap, int& start, int& end, int& pos) : _data(data), _cap(cap), _start(start), _end(end), _pos(pos) {};
+	//using difference_type = typename std::iterator<std::random_access_iterator_tag, T>::difference_type;
 	
 	bool operator != (CircIter const& comp) const
 	{
-		return this->_pos != comp._pos;
+		return this->_pos % _cap != comp._pos % _cap;
 	}
 
-	bool operator == (CircIter const& comp) const //check
+	bool operator == (CircIter const& comp) const 
 	{
 		return this->_pos % _cap == comp._pos % _cap;
 	}
@@ -75,9 +75,68 @@ public:
 		return this->_pos <= comp._pos;
 	}
 
+	CircIter operator + (const int& pos) const
+	{
+		CircIter it = *this;
+		it._pos = (_pos + pos) % _cap;
+		return it;
+	}
+
+	CircIter operator - (const int& pos) const
+	{
+		CircIter it = *this;
+		it._pos = (_pos + _cap - pos) % _cap;
+		return it;
+	}
+
+	CircIter operator + (const CircIter& iter) const
+	{
+		CircIter iterator = *this;
+		iterator._pos += iter._pos;
+		return *iterator;
+	}
+
+	CircIter operator - (const CircIter& iter) const
+	{
+		CircIter iterator = *this;
+		iterator._pos -= iter._pos;
+		return *iterator;
+	}
+
+	//difference_type operator- (const CircIter& iter) const
+	//{
+	//		return abs((int)(this->_pos - iter._pos));
+	//}
+
+	CircIter operator ++ ()
+	{
+		this->_pos++;
+		return *this;
+	}
+
+	CircIter operator ++ (int)
+	{
+		CircIter it(*this);
+		operator++();
+		return it;
+	}
+
+	CircIter operator -- ()
+	{
+		this->_pos--;
+		return *this;
+	}
+
+	CircIter operator -- (int)
+	{
+		CircIter it(*this);
+		operator--();
+		return it;
+	}
+
 private:
 	T* _data;
-	T* _pos;
+	int _pos;
 	int _start;
 	int _end;
 	size_t _cap;
