@@ -12,7 +12,6 @@ public:
 	CircularBuffer(const size_t& size)
 	{
 		arr = new T[size];
-		std::fill(arr, arr + size, 0);
 		capacity = size;
 		start = 0;
 		finish = 0;
@@ -26,13 +25,13 @@ public:
 
 	CircIter<T> begin()
 	{
-		CircIter<T> iter(arr, start, start, finish, capacity);
+		CircIter<T> iter(arr, capacity, start, finish, start);
 		return iter;
 	}
 
 	CircIter<T> end()
 	{
-		CircIter<T> iter(arr, finish, start, finish, capacity);
+		CircIter<T> iter(arr, capacity, start, finish, finish);
 		return iter;
 	}
 
@@ -84,7 +83,7 @@ public:
 		}
 	}
 
-	T size()
+	size_t size()
 	{
 		return quantity;
 	}
@@ -111,38 +110,97 @@ public:
 		delete[] buffer;
 	}
 
-	void insert(const int& iterator, const T value)
+	CircIter<T> erase(const CircIter<T>& iterator)
 	{
-		arr[iterator] = value;
-	}
-
-	void erase(const int& iterator)
-	{
-		if (iterator == start)
+		if (iterator == begin())
 		{
 			pop_begin();
+			return begin();
 		}
-		else if (iterator == finish - 1)
+		else if (iterator == end())
 		{
 			pop_back();
+			return end() - 1;
 		}
 		else
 		{
-			quantity--;
 			T* buffer = new T[capacity];
-			for (int i = 0; i < capacity; i++)
+			int max_size = 0;
+			int pos_now = -1;
+			auto iter = begin();
+			for (int i = 0; i < quantity; i++)
 			{
-				if (i == iterator)
-					continue;
-				buffer[i] = operator[](i);
+				if (iter == iterator)
+				{
+					pos_now = i;
+					i++;
+				}
+				buffer[i % capacity] = operator[](i% capacity);
+				iter++;
+				max_size++;
 			}
 			delete[] arr;
-			arr = new T[capacity + 1];
-			for (int i = 0; i < capacity; i++)
+			arr = new T[capacity];
+			int j = 0;
+			for (int i = 0; i < max_size; i++)
+			{
+				if (j == pos_now)
+					j++;
+				arr[i] = buffer[j];
+				j++;
+			}
+			start = 0;
+			finish = max_size % capacity;
+			quantity = max_size;
+			if (quantity > capacity)
+				quantity = capacity;
+			delete[] buffer;
+			return begin() + pos_now;
+		}
+	}
+
+	CircIter<T> insert(const CircIter<T>& iterator, const T& value)
+	{
+		if (iterator == begin())
+		{
+			push_begin(value);
+			return begin();
+		}
+		else if (iterator == end())
+		{
+			push_back(value);
+			return end() - 1;
+		}
+		else
+		{
+			T* buffer = new T[capacity];
+			int max_size = 0;
+			int pos_now = -1;
+			auto iter = begin();
+			for (int i = 0; i < quantity; i++)
+			{
+				if (iter == iterator)
+				{
+					pos_now = i;
+					buffer[i % capacity] = value;
+					max_size++;
+					i++;
+				}
+				buffer[i % capacity] = operator[](i% capacity);
+				iter++;
+				max_size++;
+			}
+			delete[] arr;
+			arr = new T[capacity];
+			for (int i = 0; i < max_size; i++)
 				arr[i] = buffer[i];
 			start = 0;
-			finish = quantity;
+			finish = max_size % capacity;
+			quantity = max_size;
+			if (quantity > capacity)
+				quantity = capacity;
 			delete[] buffer;
+			return begin() + pos_now;
 		}
 	}
 
