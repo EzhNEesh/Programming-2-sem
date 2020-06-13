@@ -9,7 +9,7 @@ public:
 	CircularBuffer() :
 		quantity(0), start(0), finish(0), arr(nullptr), capacity(0) {};
 
-	CircularBuffer(const size_t& size)
+	CircularBuffer(const int& size)
 	{
 		arr = new T[size];
 		capacity = size;
@@ -18,7 +18,7 @@ public:
 		quantity = 0;
 	}
 
-	T& operator[](const size_t& i) const
+	T& operator[](const int& i) const
 	{
 		return arr[(start + i) % capacity];
 	}
@@ -88,7 +88,7 @@ public:
 		return quantity;
 	}
 
-	void resize(const size_t& new_cap)
+	void resize(const int& new_cap)
 	{
 		T* buffer = new T[new_cap];
 		int max_size = 0;
@@ -212,7 +212,7 @@ public:
 private:
 	int start;
 	int finish;
-	size_t capacity;
-	size_t quantity;
+	int capacity;
+	int quantity;
 	T* arr;
 };
