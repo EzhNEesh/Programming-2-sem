@@ -76,5 +76,23 @@ int main()
 		cout << myCirc[i] << ' ';
 	}
 	cout << endl;
+
+	cout << *max_element(myCirc.begin(), myCirc.end()) << endl;
+	
+	myCirc.pop_begin();
+	for (size_t i = 0; i < myCirc.size(); i++)
+	{
+		cout << myCirc[i] << ' ';
+	}
+	cout << endl;
+	cout << *max_element(myCirc.begin(), myCirc.end()) << endl;
+
+	myCirc.erase(myCirc.begin() + 4);
+	for (size_t i = 0; i < myCirc.size(); i++)
+	{
+		cout << myCirc[i] << ' ';
+	}
+	cout << endl;
+	cout << *max_element(myCirc.begin(), myCirc.end()) << endl;
 	return 0;
 }
