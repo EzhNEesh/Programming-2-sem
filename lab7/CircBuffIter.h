@@ -7,7 +7,6 @@ class CircIter :public std::iterator<std::random_access_iterator_tag, T>
 public:
 	CircIter() : _data(nullptr), _cap(0), _start(0), _end(0), _pos(0) {};
 	CircIter(T* data, size_t cap, int& start, int& end, int& pos) : _data(data), _cap(cap), _start(start), _end(end), _pos(pos) {};
-	//using difference_type = typename std::iterator<std::random_access_iterator_tag, T>::difference_type;
 	
 	bool operator != (CircIter const& comp) const
 	{
@@ -103,11 +102,6 @@ public:
 		return *iterator;
 	}
 
-	//difference_type operator- (const CircIter& iter) const
-	//{
-	//		return abs((int)(this->_pos - iter._pos));
-	//}
-
 	CircIter operator ++ ()
 	{
 		this->_pos++;
@@ -132,6 +126,11 @@ public:
 		CircIter it(*this);
 		operator--();
 		return it;
+	}
+
+	typename CircIter::reference operator*() const 
+	{
+		return _data[_pos];
 	}
 
 private:
